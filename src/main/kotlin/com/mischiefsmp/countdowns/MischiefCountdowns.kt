@@ -11,6 +11,7 @@ class MischiefCountdowns: JavaPlugin() {
 
     override fun onEnable() {
         LangManager.init()
+        getCommand("countdown")!!.setExecutor(CountdownCommand())
     }
 
     companion object {
