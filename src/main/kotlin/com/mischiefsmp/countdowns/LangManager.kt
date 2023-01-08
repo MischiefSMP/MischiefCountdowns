@@ -14,6 +14,8 @@ class TLConfig {
     lateinit var cmdMaxMessage: String
     @JsonProperty("cmd-bad-min")
     lateinit var cmdMinMessage: String
+    @JsonProperty("cmd-busy")
+    lateinit var cmdBusy: String
 }
 
 object LangManager {
