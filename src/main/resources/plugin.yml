@@ -3,3 +3,13 @@ version: $version
 author: sven@wollinger.email
 main: com.mischiefsmp.countdowns.MischiefCountdowns
 api-version: 1.19
+website: wollinger.io
+commands:
+  countdown:
+    description: Countdown command
+    usage: "/<command>"
+permissions:
+  countdowns.create:
+    default: false
+  countdowns.view:
+    default: true
