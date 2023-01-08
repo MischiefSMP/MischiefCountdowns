@@ -1,0 +1,5 @@
+name: MischiefCountdowns
+version: $version
+author: sven@wollinger.email
+main: com.mischiefsmp.countdowns.MischiefCountdowns
+api-version: 1.19
