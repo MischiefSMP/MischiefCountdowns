@@ -1,1 +1,4 @@
 cmd-noperm: "You dont have the permission to use this command."
+cmd-missing-seconds: "Please enter the time you want your countdown to last (in seconds)."
+cmd-bad-max: "Could not create countdown: Max seconds are %d!"
+cmd-bad-min: "Countdown cant be less then 1!"

@@ -8,6 +8,12 @@ import java.io.File
 class TLConfig {
     @JsonProperty("cmd-noperm")
     lateinit var cmdNoPerm: String
+    @JsonProperty("cmd-missing-seconds")
+    lateinit var cmdMissingSec: String
+    @JsonProperty("cmd-bad-max")
+    lateinit var cmdMaxMessage: String
+    @JsonProperty("cmd-bad-min")
+    lateinit var cmdMinMessage: String
 }
 
 object LangManager {
