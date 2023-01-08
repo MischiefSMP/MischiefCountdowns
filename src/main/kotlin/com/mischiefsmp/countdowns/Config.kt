@@ -11,6 +11,9 @@ class Config {
     lateinit var prefix: String
     @JsonProperty("max-time")
     var maxTime: Int = 0
+    var bossbar = true
+    @JsonProperty("bossbar-color")
+    lateinit var barColor: String
 
     fun save() = mapper.writeValue(cfgFile, this)
 

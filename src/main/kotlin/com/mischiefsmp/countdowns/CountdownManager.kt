@@ -15,13 +15,15 @@ object CountdownManager {
         pl.server.onlinePlayers.forEach {
             if(it.hasPermission("countdowns.view")) {
                 it.sendMessage("${pl.config.prefix} $cd")
-                val id = it.uniqueId
-                val bar = bossBars[id] ?: BossBar.bossBar(Component.text(cd), progress, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_20).also { bossBar ->
-                    bossBars[id] = bossBar
-                    it.showBossBar(bossBar)
+                if(pl.config.bossbar) {
+                    val id = it.uniqueId
+                    val bar = bossBars[id] ?: BossBar.bossBar(Component.text(cd), progress, BossBar.Color.valueOf(pl.config.barColor), BossBar.Overlay.NOTCHED_20).also { bossBar ->
+                        bossBars[id] = bossBar
+                    }
+                    it.showBossBar(bar)
+                    bar.name(Component.text(cd))
+                    bar.progress(progress)
                 }
-                bar.name(Component.text(cd))
-                bar.progress(progress)
             }
         }
     }
