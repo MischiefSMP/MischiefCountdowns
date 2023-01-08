@@ -11,22 +11,23 @@ object CountdownManager {
     private val bossBars = ConcurrentHashMap<UUID, BossBar>()
     var busy = false
 
-    private fun update(cd: Int) {
+    private fun update(cd: Int, progress: Float) {
         pl.server.onlinePlayers.forEach {
             if(it.hasPermission("countdowns.view")) {
                 it.sendMessage("${pl.config.prefix} $cd")
                 val id = it.uniqueId
-                val bar = bossBars[id] ?: BossBar.bossBar(Component.text(cd), 0.0F, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_20).also { bossBar ->
+                val bar = bossBars[id] ?: BossBar.bossBar(Component.text(cd), progress, BossBar.Color.BLUE, BossBar.Overlay.NOTCHED_20).also { bossBar ->
                     bossBars[id] = bossBar
                     it.showBossBar(bossBar)
                 }
                 bar.name(Component.text(cd))
-                bar.progress(0.0F)
+                bar.progress(progress)
             }
         }
     }
 
     fun create(time: Int) {
+        busy = true
         object: BukkitRunnable() {
             val reach = System.currentTimeMillis() / 1000 + time
             var next = System.currentTimeMillis() / 1000 + 1
@@ -36,19 +37,23 @@ object CountdownManager {
 
                 if(current == next) {
                     next++
-                    update(cd)
+                    update(cd, (reach - current + 1).toFloat() / time)
                     cd--
                 }
 
                 if(current > reach) {
                     busy = false
-                    bossBars.forEach { (uuid, bb) ->
-                        pl.server.getPlayer(uuid)?.hideBossBar(bb)
-                        bossBars.remove(uuid)
-                    }
+                    clearBossbars()
                     cancel()
                 }
             }
         }.runTaskTimer(pl, 0, 1)
+    }
+
+    fun clearBossbars() {
+        bossBars.forEach { (uuid, bb) ->
+            pl.server.getPlayer(uuid)?.hideBossBar(bb)
+            bossBars.remove(uuid)
+        }
     }
 }

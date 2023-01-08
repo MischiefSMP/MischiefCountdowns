@@ -14,6 +14,10 @@ class MischiefCountdowns: JavaPlugin() {
         getCommand("countdown")!!.setExecutor(CountdownCommand())
     }
 
+    override fun onDisable() {
+        CountdownManager.clearBossbars()
+    }
+
     companion object {
         lateinit var plugin: MischiefCountdowns
     }
