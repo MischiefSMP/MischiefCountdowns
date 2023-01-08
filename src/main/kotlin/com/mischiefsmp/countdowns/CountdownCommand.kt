@@ -31,6 +31,13 @@ class CountdownCommand: CommandExecutor {
             send(sender, tl.cmdMinMessage)
             return true
         }
+
+        if(CountdownManager.busy) {
+            send(sender, tl.cmdBusy)
+            return true
+        }
+
+        CountdownManager.create(time)
         return true
     }
 }
