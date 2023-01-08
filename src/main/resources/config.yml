@@ -1,2 +1,5 @@
 languages: ["en", "de"]
 language: "en"
+prefix: "[MischiefCountdowns]"
+#Max time in seconds, set to -1 to disable
+max-time: 500
