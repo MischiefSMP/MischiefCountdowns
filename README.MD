@@ -1,6 +1,23 @@
 # MischiefCountdowns
 
-In development
+MischiefCountdowns allows you to create multiple countdowns that can be displayed both via a boss bar and in chat (disabled by default).
+
+![Demo](https://i.imgur.com/VkvgwWi.png)
+
+Command Usage:
+```/countdown [start/stop] <id> <seconds> [pink/blue/red/green/yellow/purple/white]```
+
+Commands exist with a unique id. This id can contain Colors (which are only displayed).
+
+So the id ```&6Morning&4Meeting``` becomes ```morningmeeting``` in practice.
+
+This is only important should you want to stop a countdown.
+
+The config.yml allows you to change multiple settings like default bar color, if its shown at all etc.
+
+Note: 
+Should you get an error while updating to a newer version please try to delete the Plugin folder "MischiefCountdowns" and restart.
+
 
 License
 ----
