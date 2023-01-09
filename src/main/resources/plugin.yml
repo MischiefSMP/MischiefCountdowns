@@ -7,7 +7,7 @@ website: wollinger.io
 commands:
   countdown:
     description: Countdown command
-    usage: "/<command>"
+    usage: "/countdown [start/stop] <id> <seconds> [pink/blue/red/green/yellow/purple/white]"
 permissions:
   countdowns.create:
     default: false
