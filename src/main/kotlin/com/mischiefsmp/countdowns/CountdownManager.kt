@@ -1,35 +1,30 @@
 package com.mischiefsmp.countdowns
 
-import net.kyori.adventure.bossbar.BossBar
-import net.kyori.adventure.text.Component
+import org.bukkit.boss.BarColor
+import org.bukkit.boss.BarStyle
+import org.bukkit.boss.BossBar
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.*
-import java.util.concurrent.ConcurrentHashMap
 
 object CountdownManager {
     private val pl = MischiefCountdowns.plugin
-    private val bossBars = ConcurrentHashMap<UUID, BossBar>()
-    var busy = false
+    private var bossBar: BossBar? = null
 
     private fun update(cd: Int, progress: Float) {
         pl.server.onlinePlayers.forEach {
             if(it.hasPermission("countdowns.view")) {
                 it.sendMessage("${pl.config.prefix} $cd")
-                if(pl.config.bossbar) {
-                    val id = it.uniqueId
-                    val bar = bossBars[id] ?: BossBar.bossBar(Component.text(cd), progress, BossBar.Color.valueOf(pl.config.barColor), BossBar.Overlay.NOTCHED_20).also { bossBar ->
-                        bossBars[id] = bossBar
-                    }
-                    it.showBossBar(bar)
-                    bar.name(Component.text(cd))
-                    bar.progress(progress)
+                if(pl.config.bossbar && bossBar != null) {
+                    if(!bossBar!!.players.contains(it))
+                        bossBar!!.addPlayer(it)
+                    bossBar!!.setTitle(cd.toString())
+                    bossBar!!.progress = progress.toDouble()
                 }
             }
         }
     }
 
     fun create(time: Int) {
-        busy = true
+        bossBar = pl.server.createBossBar("Countdown", BarColor.valueOf(pl.config.barColor), BarStyle.SOLID)
         object: BukkitRunnable() {
             val reach = System.currentTimeMillis() / 1000 + time
             var next = System.currentTimeMillis() / 1000 + 1
@@ -44,7 +39,6 @@ object CountdownManager {
                 }
 
                 if(current > reach) {
-                    busy = false
                     clearBossbars()
                     cancel()
                 }
@@ -52,10 +46,12 @@ object CountdownManager {
         }.runTaskTimer(pl, 0, 1)
     }
 
+    fun isBusy() = bossBar != null
+
     fun clearBossbars() {
-        bossBars.forEach { (uuid, bb) ->
-            pl.server.getPlayer(uuid)?.hideBossBar(bb)
-            bossBars.remove(uuid)
+        pl.server.onlinePlayers.forEach {
+            bossBar?.removePlayer(it)
         }
+        bossBar = null
     }
 }

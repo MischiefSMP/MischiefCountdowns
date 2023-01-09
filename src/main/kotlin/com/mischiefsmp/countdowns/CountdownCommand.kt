@@ -32,7 +32,7 @@ class CountdownCommand: CommandExecutor {
             return true
         }
 
-        if(CountdownManager.busy) {
+        if(CountdownManager.isBusy()) {
             send(sender, tl.cmdBusy)
             return true
         }
