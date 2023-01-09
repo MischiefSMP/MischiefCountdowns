@@ -9,7 +9,9 @@ commands:
     description: Countdown command
     usage: "/countdown [start/stop] <id> <seconds> [pink/blue/red/green/yellow/purple/white]"
 permissions:
-  countdowns.create:
+  countdowns.start:
+    default: false
+  countdowns.stop:
     default: false
   countdowns.view:
     default: true
