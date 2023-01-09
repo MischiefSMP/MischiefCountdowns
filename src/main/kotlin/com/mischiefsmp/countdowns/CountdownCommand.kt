@@ -39,10 +39,9 @@ class CountdownCommand: CommandExecutor {
                     return true
                 }
 
-                if(!CountdownManager.start(id, time, color)) {
-                    send(sender, tl.cmdBusy)
-                    return true
-                }
+                if(CountdownManager.start(id, time, color)) send(sender, tl.cmdStarted)
+                else send(sender, tl.cmdBusy)
+                return true
             }
             "stop" -> {
                 if(CountdownManager.stop(id)) send(sender, tl.cmdStoppedYes)

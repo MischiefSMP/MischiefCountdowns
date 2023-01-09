@@ -12,6 +12,8 @@ class TLConfig {
     lateinit var cmdStoppedYes: String
     @JsonProperty("cmd-stopped-no")
     lateinit var cmdStoppedNo: String
+    @JsonProperty("cmd-started")
+    lateinit var cmdStarted: String
     @JsonProperty("cmd-noperm")
     lateinit var cmdNoPerm: String
     @JsonProperty("cmd-bad-max")
