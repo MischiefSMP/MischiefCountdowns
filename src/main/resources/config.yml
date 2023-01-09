@@ -1,9 +1,14 @@
+#Available languages
 languages: ["en", "de"]
+#Selected language
 language: "en"
+#Prefix shown in chat
 prefix: "[MischiefCountdowns]"
 #Max time in seconds, set to -1 to disable
 max-time: 500
+#Set to true to display chat messages (Gets spammy fast)
 in-chat: false
+#Set to false to hide bossbar
 bossbar: true
-#Options: pink, blue, red, green, yellow, purple, white
+#Bossbar color. Options: pink, blue, red, green, yellow, purple, white
 bossbar-color: "PINK"

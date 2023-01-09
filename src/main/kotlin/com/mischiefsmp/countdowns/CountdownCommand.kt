@@ -33,12 +33,13 @@ class CountdownCommand: CommandExecutor, TabCompleter {
                 }
 
                 val time = args.getOrNull(2)?.toIntOrNull()
+                val maxTime = pl.config.maxTime
+                val color = args.getOrNull(3)?.uppercase() ?: pl.config.barColor
+
                 if(time == null) {
                     badUsage(sender, tl)
                     return true
                 }
-                val maxTime = pl.config.maxTime
-                val color = args.getOrNull(3)?.uppercase() ?: pl.config.barColor
 
                 //Min check
                 if(time < 1) {
