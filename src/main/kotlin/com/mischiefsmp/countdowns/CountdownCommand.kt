@@ -9,11 +9,12 @@ import org.bukkit.command.TabCompleter
 class CountdownCommand: CommandExecutor, TabCompleter {
     private val pl = MischiefCountdowns.plugin
 
-    private fun send(sender: CommandSender, msg: String) {
-        sender.sendMessage("${pl.config.prefix} $msg")
-    }
-
+    private fun send(sender: CommandSender, msg: String) = sender.sendMessage("${pl.config.prefix} $msg")
     private fun permCheck(sender: CommandSender, perm: String) = sender is ConsoleCommandSender || sender.isOp || sender.hasPermission(perm)
+    private fun badUsage(sender: CommandSender, tl: TLConfig) {
+        send(sender, tl.cmdBadUsage)
+        send(sender, pl.server.getPluginCommand("countdown")!!.usage)
+    }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         val tl = LangManager.tl()!!
@@ -24,7 +25,6 @@ class CountdownCommand: CommandExecutor, TabCompleter {
         }
 
         val id = args[1]
-
         when(args[0]) {
             "start" -> {
                 if(!permCheck(sender, "countdowns.start")) {
@@ -68,36 +68,34 @@ class CountdownCommand: CommandExecutor, TabCompleter {
         return true
     }
 
-    private fun badUsage(sender: CommandSender, tl: TLConfig) {
-        send(sender, tl.cmdBadUsage)
-        send(sender, pl.server.getPluginCommand("countdown")!!.usage)
-    }
-
     override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): MutableList<String> {
         val list = MutableList(0) { "" }
+        val hasStart = permCheck(sender, "countdowns.start")
+        val hasStop = permCheck(sender, "countdowns.stop")
+        fun permAndAdd(perm: String, intended: String, index: Int) {
+            if(permCheck(sender, perm) && intended.startsWith(args[index]))
+                list.add(intended)
+        }
         when(args.size) {
             1 -> {
-                if(permCheck(sender, "countdowns.start") && "start".startsWith(args[0]))
-                    list.add("start")
-                if(permCheck(sender, "countdowns.stop") && "stop".startsWith(args[0]))
-                    list.add("stop")
+                permAndAdd("countdowns.start", "start", 0)
+                permAndAdd("countdowns.stop", "stop", 0)
             }
             2 -> {
-                if(args[0] == "start") {
+                if(args[0] == "start" && hasStart) {
                     list.add("<id>")
-                } else if(args[0] == "stop") {
+                } else if(args[0] == "stop" && hasStop) {
                     CountdownManager.getBarNames().forEach {
-                        if(it.startsWith(args[1]))
-                            list.add(it)
+                        if(it.startsWith(args[1])) list.add(it)
                     }
                 }
             }
             3 -> {
-                if(args[0] == "start")
+                if(args[0] == "start" && hasStart)
                     list.add("<seconds>")
             }
             4 -> {
-                if(args[0] == "start") {
+                if(args[0] == "start" && hasStart) {
                     listOf("pink", "blue", "red", "green", "yellow", "purple", "white").forEach {
                         if(it.startsWith(args[3]))
                             list.add(it)
