@@ -25,7 +25,16 @@ object CountdownManager {
         }
     }
 
-    fun create(id: String, time: Int, color: String): Boolean {
+    fun stop(id: String): Boolean {
+        if(!bars.containsKey(id)) return false
+        pl.server.onlinePlayers.forEach {
+            bars[id]?.removePlayer(it)
+        }
+        bars.remove(id)
+        return true
+    }
+
+    fun start(id: String, time: Int, color: String): Boolean {
         if(bars.containsKey(id)) return false
 
         bars[id] = pl.server.createBossBar("Countdown", BarColor.valueOf(color), BarStyle.SOLID)
@@ -43,10 +52,7 @@ object CountdownManager {
                 }
 
                 if(current > reach) {
-                    pl.server.onlinePlayers.forEach {
-                        bars[id]?.removePlayer(it)
-                    }
-                    bars.remove(id)
+                    stop(id)
                     cancel()
                 }
             }

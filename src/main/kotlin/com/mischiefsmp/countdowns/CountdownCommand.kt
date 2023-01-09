@@ -15,8 +15,7 @@ class CountdownCommand: CommandExecutor {
         val tl = LangManager.tl()!!
 
         if(args.size < 2) {
-            send(sender, tl.cmdUsage)
-            send(sender, pl.server.getPluginCommand("countdown")!!.usage)
+            badUsage(sender, tl)
             return true
         }
 
@@ -40,16 +39,24 @@ class CountdownCommand: CommandExecutor {
                     return true
                 }
 
-                if(!CountdownManager.create(id, time, color)) {
+                if(!CountdownManager.start(id, time, color)) {
                     send(sender, tl.cmdBusy)
                     return true
                 }
             }
             "stop" -> {
-
+                if(CountdownManager.stop(id)) send(sender, tl.cmdStoppedYes)
+                else send(sender, tl.cmdStoppedNo)
+                return true
             }
         }
 
+        badUsage(sender, tl)
         return true
+    }
+
+    private fun badUsage(sender: CommandSender, tl: TLConfig) {
+        send(sender, tl.cmdBadUsage)
+        send(sender, pl.server.getPluginCommand("countdown")!!.usage)
     }
 }

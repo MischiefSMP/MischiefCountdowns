@@ -6,12 +6,14 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import java.io.File
 
 class TLConfig {
-    @JsonProperty("cmd-usage")
-    lateinit var cmdUsage: String
+    @JsonProperty("cmd-bad-usage")
+    lateinit var cmdBadUsage: String
+    @JsonProperty("cmd-stopped-yes")
+    lateinit var cmdStoppedYes: String
+    @JsonProperty("cmd-stopped-no")
+    lateinit var cmdStoppedNo: String
     @JsonProperty("cmd-noperm")
     lateinit var cmdNoPerm: String
-    @JsonProperty("cmd-missing-seconds")
-    lateinit var cmdMissingSec: String
     @JsonProperty("cmd-bad-max")
     lateinit var cmdMaxMessage: String
     @JsonProperty("cmd-bad-min")
