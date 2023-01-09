@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.20"
+    id("MischiefGradleTestServer") version("latest.release")
 }
 
 group = "com.mischiefsmp"
@@ -9,6 +10,7 @@ version = "0.0.2"
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
 }
 
@@ -41,4 +43,9 @@ tasks.processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         expand("version" to project.version)
     }
+}
+
+TestServerConfig {
+    version = "1.19.3"
+    pluginDir(File("build/libs"))
 }
