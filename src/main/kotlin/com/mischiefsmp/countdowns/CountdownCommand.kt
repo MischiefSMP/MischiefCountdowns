@@ -14,30 +14,42 @@ class CountdownCommand: CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         val tl = LangManager.tl()!!
 
-        if(args.isEmpty() || args[0].toIntOrNull() == null) {
-            send(sender, tl.cmdMinMessage)
+        if(args.size < 2) {
+            send(sender, tl.cmdUsage)
+            send(sender, pl.server.getPluginCommand("countdown")!!.usage)
             return true
         }
 
-        val time = args[0].toInt()
-        val maxTime = pl.config.maxTime
+        val id = args[1]
 
-        if(time > maxTime && maxTime != -1) {
-            send(sender, String.format(tl.cmdMaxMessage, maxTime))
-            return true
+        when(args[0]) {
+            "start" -> {
+                val time = args[2].toInt()
+                val maxTime = pl.config.maxTime
+                val color = args.getOrNull(3)?.uppercase() ?: pl.config.barColor
+
+                //Min check
+                if(time < 1) {
+                    send(sender, tl.cmdMinMessage)
+                    return true
+                }
+
+                //Max time
+                if(time > maxTime && maxTime != -1) {
+                    send(sender, String.format(tl.cmdMaxMessage, maxTime))
+                    return true
+                }
+
+                if(!CountdownManager.create(id, time, color)) {
+                    send(sender, tl.cmdBusy)
+                    return true
+                }
+            }
+            "stop" -> {
+
+            }
         }
 
-        if(time < 1) {
-            send(sender, tl.cmdMinMessage)
-            return true
-        }
-
-        if(CountdownManager.isBusy()) {
-            send(sender, tl.cmdBusy)
-            return true
-        }
-
-        CountdownManager.create(time)
         return true
     }
 }

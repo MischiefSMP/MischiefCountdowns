@@ -4,27 +4,31 @@ import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
 import org.bukkit.scheduler.BukkitRunnable
+import java.util.concurrent.ConcurrentHashMap
 
 object CountdownManager {
     private val pl = MischiefCountdowns.plugin
-    private var bossBar: BossBar? = null
+    private val bars = ConcurrentHashMap<String, BossBar>()
 
-    private fun update(cd: Int, progress: Float) {
+    private fun update(id: String, cd: String, progress: Float) {
+        val bossBar = bars[id]!!
         pl.server.onlinePlayers.forEach {
             if(it.hasPermission("countdowns.view")) {
                 it.sendMessage("${pl.config.prefix} $cd")
-                if(pl.config.bossbar && bossBar != null) {
-                    if(!bossBar!!.players.contains(it))
-                        bossBar!!.addPlayer(it)
-                    bossBar!!.setTitle(cd.toString())
-                    bossBar!!.progress = progress.toDouble()
+                if(pl.config.bossbar) {
+                    if(!bossBar.players.contains(it))
+                        bossBar.addPlayer(it)
+                    bossBar.setTitle(cd)
+                    bossBar.progress = progress.toDouble()
                 }
             }
         }
     }
 
-    fun create(time: Int) {
-        bossBar = pl.server.createBossBar("Countdown", BarColor.valueOf(pl.config.barColor), BarStyle.SOLID)
+    fun create(id: String, time: Int, color: String): Boolean {
+        if(bars.containsKey(id)) return false
+
+        bars[id] = pl.server.createBossBar("Countdown", BarColor.valueOf(color), BarStyle.SOLID)
         object: BukkitRunnable() {
             val reach = System.currentTimeMillis() / 1000 + time
             var next = System.currentTimeMillis() / 1000 + 1
@@ -34,24 +38,28 @@ object CountdownManager {
 
                 if(current == next) {
                     next++
-                    update(cd, (reach - current + 1).toFloat() / time)
+                    update(id, "$id: $cd", (reach - current + 1).toFloat() / time)
                     cd--
                 }
 
                 if(current > reach) {
-                    clearBossbars()
+                    pl.server.onlinePlayers.forEach {
+                        bars[id]?.removePlayer(it)
+                    }
+                    bars.remove(id)
                     cancel()
                 }
             }
         }.runTaskTimer(pl, 0, 1)
+        return true
     }
 
-    fun isBusy() = bossBar != null
-
     fun clearBossbars() {
-        pl.server.onlinePlayers.forEach {
-            bossBar?.removePlayer(it)
+        pl.server.onlinePlayers.forEach { player ->
+            bars.keys.forEach {
+                bars[it]?.removePlayer(player)
+            }
         }
-        bossBar = null
+        bars.clear()
     }
 }
