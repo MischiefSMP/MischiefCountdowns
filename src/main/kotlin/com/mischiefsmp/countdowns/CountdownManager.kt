@@ -14,7 +14,7 @@ object CountdownManager {
         val bossBar = bars[id]!!
         pl.server.onlinePlayers.forEach {
             if(it.hasPermission("countdowns.view")) {
-                it.sendMessage("${pl.config.prefix} $cd")
+                if(pl.config.inChat) it.sendMessage("${pl.config.prefix} $cd")
                 if(pl.config.bossbar) {
                     if(!bossBar.players.contains(it))
                         bossBar.addPlayer(it)
@@ -43,6 +43,9 @@ object CountdownManager {
             var next = System.currentTimeMillis() / 1000 + 1
             var cd = time
             override fun run() {
+                if(!bars.containsKey(id))
+                    cancel()
+
                 val current = System.currentTimeMillis() / 1000
 
                 if(current == next) {

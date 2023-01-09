@@ -11,6 +11,8 @@ class Config {
     lateinit var prefix: String
     @JsonProperty("max-time")
     var maxTime: Int = 0
+    @JsonProperty("in-chat")
+    var inChat = false
     var bossbar = true
     @JsonProperty("bossbar-color")
     lateinit var barColor: String
