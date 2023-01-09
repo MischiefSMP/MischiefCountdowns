@@ -67,6 +67,8 @@ object CountdownManager {
         return true
     }
 
+    fun getBarNames() = bars.keys().toList()
+
     fun clearBossbars() {
         pl.server.onlinePlayers.forEach { player ->
             bars.keys.forEach {

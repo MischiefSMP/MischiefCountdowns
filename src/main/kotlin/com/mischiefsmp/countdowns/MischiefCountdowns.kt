@@ -11,7 +11,12 @@ class MischiefCountdowns: JavaPlugin() {
 
     override fun onEnable() {
         LangManager.init()
-        getCommand("countdown")!!.setExecutor(CountdownCommand())
+        getCommand("countdown")!!.run {
+            CountdownCommand().also { cmd ->
+                setExecutor(cmd)
+                tabCompleter = cmd
+            }
+        }
     }
 
     override fun onDisable() {
