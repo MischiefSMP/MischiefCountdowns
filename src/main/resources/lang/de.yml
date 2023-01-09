@@ -1,3 +1,4 @@
+cmd-usage: "Falsche Nutzung!"
 cmd-noperm: "Du hast nicht die Berechtigungen um diesen Befehl auszuführen."
 cmd-missing-seconds: "Bitte gib an wie lange dein Countdown dauern soll (in Sekunden)."
 cmd-bad-max: "Konnte Countdown nicht erstellen: Maximale Sekunden sind auf %d gestellt!"
