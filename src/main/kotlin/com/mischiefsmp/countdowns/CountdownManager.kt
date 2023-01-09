@@ -1,5 +1,6 @@
 package com.mischiefsmp.countdowns
 
+import org.bukkit.ChatColor
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
@@ -14,18 +15,20 @@ object CountdownManager {
         val bossBar = bars[id]!!
         pl.server.onlinePlayers.forEach {
             if(it.hasPermission("countdowns.view")) {
-                if(pl.config.inChat) it.sendMessage("${pl.config.prefix} $cd")
+                val coloredText = ChatColor.translateAlternateColorCodes('&', cd)
+                if(pl.config.inChat) it.sendMessage("${pl.config.prefix} $coloredText")
                 if(pl.config.bossbar) {
                     if(!bossBar.players.contains(it))
                         bossBar.addPlayer(it)
-                    bossBar.setTitle(cd)
+                    bossBar.setTitle(coloredText)
                     bossBar.progress = progress.toDouble()
                 }
             }
         }
     }
 
-    fun stop(id: String): Boolean {
+    fun stop(_id: String): Boolean {
+        val id = _id.lowercase()
         if(!bars.containsKey(id)) return false
         pl.server.onlinePlayers.forEach {
             bars[id]?.removePlayer(it)
@@ -34,7 +37,8 @@ object CountdownManager {
         return true
     }
 
-    fun start(id: String, time: Int, color: String): Boolean {
+    fun start(_id: String, time: Int, color: String): Boolean {
+        val id = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', _id))!!.lowercase()
         if(bars.containsKey(id)) return false
 
         bars[id] = pl.server.createBossBar("Countdown", BarColor.valueOf(color), BarStyle.SOLID)
@@ -50,7 +54,7 @@ object CountdownManager {
 
                 if(current == next) {
                     next++
-                    update(id, "$id: $cd", (reach - current + 1).toFloat() / time)
+                    update(id, "$_id: $cd", (reach - current + 1).toFloat() / time)
                     cd--
                 }
 
