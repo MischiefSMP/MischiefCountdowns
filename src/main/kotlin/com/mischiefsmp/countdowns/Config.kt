@@ -16,6 +16,8 @@ class Config {
     var bossbar = true
     @JsonProperty("bossbar-color")
     lateinit var barColor: String
+    @JsonProperty("play-sound")
+    var playSound = true
 
     fun save() = mapper.writeValue(cfgFile, this)
 

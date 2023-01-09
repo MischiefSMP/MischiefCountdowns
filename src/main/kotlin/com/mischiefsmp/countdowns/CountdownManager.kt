@@ -1,9 +1,11 @@
 package com.mischiefsmp.countdowns
 
 import org.bukkit.ChatColor
+import org.bukkit.Sound
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
+import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.concurrent.ConcurrentHashMap
 
@@ -37,6 +39,13 @@ object CountdownManager {
         return true
     }
 
+    private fun playSound(sound: Sound) {
+        if(!pl.config.playSound) return
+        pl.server.onlinePlayers.forEach {
+            it.playSound(it.location, sound, 1.0F, 1.0F)
+        }
+    }
+
     fun start(_id: String, time: Int, color: String): Boolean {
         val id = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', _id))!!.lowercase()
         if(bars.containsKey(id)) return false
@@ -55,11 +64,16 @@ object CountdownManager {
                 if(current == next) {
                     next++
                     update(id, "$_id&r: $cd", (reach - current + 1).toFloat() / time)
+                    if(cd < 4 && cd != 0) playSound(Sound.BLOCK_NOTE_BLOCK_PLING)
                     cd--
                 }
 
                 if(current > reach) {
-                    stop(id)
+                    object: BukkitRunnable() {
+                        override fun run() { stop(id) }
+                    }.runTaskLater(pl, 20)
+
+                    playSound(Sound.ENTITY_PLAYER_LEVELUP)
                     cancel()
                 }
             }

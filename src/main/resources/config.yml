@@ -12,3 +12,5 @@ in-chat: false
 bossbar: true
 #Bossbar color. Options: pink, blue, red, green, yellow, purple, white
 bossbar-color: "PINK"
+# Set to false to disable sound
+play-sound: true
