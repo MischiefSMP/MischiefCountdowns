@@ -6,6 +6,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import java.io.File
 
 class TLConfig {
+    @JsonProperty("cmd-usage")
+    lateinit var cmdUsage: String
     @JsonProperty("cmd-noperm")
     lateinit var cmdNoPerm: String
     @JsonProperty("cmd-missing-seconds")
