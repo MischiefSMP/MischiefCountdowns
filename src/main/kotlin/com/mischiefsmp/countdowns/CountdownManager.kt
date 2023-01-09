@@ -54,7 +54,7 @@ object CountdownManager {
 
                 if(current == next) {
                     next++
-                    update(id, "$_id: $cd", (reach - current + 1).toFloat() / time)
+                    update(id, "$_id&r: $cd", (reach - current + 1).toFloat() / time)
                     cd--
                 }
 
