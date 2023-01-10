@@ -22,9 +22,9 @@ Should you get an error while updating to a newer version please try to delete t
 
 MischiefCountdowns adds two placeholders:
 
-%mischiefcountdowns_id_<id>% -> Translates into the formatted id, so with color and upper/lowercase letters
+%mischiefcountdowns_id_mycountdown% -> Translates into the formatted id, so with color and upper/lowercase letters
 
-%mischiefcountdowns_number_<id>% -> Translates into the actual countdown as an Integer
+%mischiefcountdowns_number_mycountdown% -> Translates into the actual countdown as an Integer
 
 License
 ----
