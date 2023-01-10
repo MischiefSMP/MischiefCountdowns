@@ -1,5 +1,6 @@
 package com.mischiefsmp.countdowns
 
+import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 class MischiefCountdowns: JavaPlugin() {
@@ -17,6 +18,8 @@ class MischiefCountdowns: JavaPlugin() {
                 tabCompleter = cmd
             }
         }
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+            PlaceholderExtension().register()
     }
 
     override fun onDisable() {

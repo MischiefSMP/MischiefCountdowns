@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap
 object CountdownManager {
     private val pl = MischiefCountdowns.plugin
     private val bars = ConcurrentHashMap<String, BossBar>()
+    private val cdInfo = ConcurrentHashMap<String, Pair<Int, String>>()
 
     private fun update(id: String, cd: String, progress: Float) {
         val bossBar = bars[id]!!
@@ -36,6 +37,7 @@ object CountdownManager {
             bars[id]?.removePlayer(it)
         }
         bars.remove(id)
+        cdInfo.remove(id)
         return true
     }
 
@@ -65,6 +67,7 @@ object CountdownManager {
                     next++
                     update(id, "$_id&r: $cd", (reach - current + 1).toFloat() / time)
                     if(cd < 4 && cd != 0) playSound(Sound.BLOCK_NOTE_BLOCK_PLING)
+                    cdInfo[id] = Pair(cd, _id)
                     cd--
                 }
 
@@ -91,4 +94,7 @@ object CountdownManager {
         }
         bars.clear()
     }
+
+    fun getCountdown(id: String) = cdInfo[id.lowercase()]?.first
+    fun getPrettyId(id: String) = cdInfo[id.lowercase()]?.second
 }

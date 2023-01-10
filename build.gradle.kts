@@ -20,12 +20,14 @@ repositories {
     }
     maven { url = URI("https://oss.sonatype.org/content/repositories/snapshots") }
     maven { url = URI("https://oss.sonatype.org/content/repositories/central") }
+    maven { url = URI("https://repo.extendedclip.com/content/repositories/placeholderapi/") }
     mavenCentral()
     mavenLocal()
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.11.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.1")

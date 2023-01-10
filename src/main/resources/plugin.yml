@@ -4,6 +4,7 @@ author: sven@wollinger.email
 main: com.mischiefsmp.countdowns.MischiefCountdowns
 api-version: 1.19
 website: wollinger.io
+softdepend: [PlaceholderAPI]
 commands:
   countdown:
     description: Countdown command
